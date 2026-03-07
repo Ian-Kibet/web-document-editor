@@ -1,0 +1,33 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Node
+node_modules/
+.npm
+.yarn/cache
+.yarn/unplugged
+.pnp.*
+
+# Frontend build outputs
+dist/
+.next/
+out/
+.vite/
+
+# .NET build outputs
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+# Test results
+TestResults/
+coverage/
+
+# Env files
+.env
+.env.local
+.env.*.local
