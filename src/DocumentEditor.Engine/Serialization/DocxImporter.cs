@@ -102,7 +102,7 @@ public class DocxImporter
         // Strip the mandatory OOXML trailing empty paragraph.
         // Word never displays it; WaveEditor's exporter appends a body-level <w:sectPr>
         // directly, so removing it here is safe and round-trip export is unaffected.
-        while (doc.Children.Count > 0
+        while (doc.Children.Count > 1
             && doc.Children[^1] is ModelParagraph lastPara
             && lastPara.Properties.SectionBreak is null      // never strip a section-break holder
             && IsTrailingEmptyParagraph(lastPara))
