@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/DocumentEditor.Engine/DocumentEditor.Engine.csproj" />
+    <Project Path="src/DocumentEditor.Wasm/DocumentEditor.Wasm.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/DocumentEditor.Engine.Tests/DocumentEditor.Engine.Tests.csproj" />
+  </Folder>
+</Solution>

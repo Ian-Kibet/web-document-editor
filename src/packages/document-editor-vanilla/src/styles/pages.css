@@ -1,0 +1,226 @@
+/* ─── Multi-Page Layout ─────────────────────────────────── */
+
+.pages-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.page-frame {
+  position: relative;
+  overflow: visible;
+}
+
+/* Overlay container for page-break visuals */
+.page-breaks-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Individual page-break overlay: marginBottom + gap + marginTop */
+.page-break-line {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: transparent;
+}
+
+.page-break-margin-bottom {
+  background: #fff;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.page-break-gap {
+  background: #e8e8e8;
+  box-shadow:
+    inset 0 2px 3px rgba(0, 0, 0, 0.1),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.page-break-margin-top {
+  background: #fff;
+  box-shadow: 0 -2px 3px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+/* ─── Header/Footer Content in Margin Zones ─────────────── */
+
+.page-break-header-content,
+.page-break-footer-content {
+  box-sizing: border-box;
+  overflow: hidden;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.page-break-header-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.page-break-footer-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.page-header-overlay,
+.page-footer-overlay {
+  pointer-events: none;
+  z-index: 11;
+  overflow: hidden;
+  box-sizing: border-box;
+  position: absolute;
+}
+
+.page-footer-overlay {
+  background: #fff;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* ─── Section wrappers ──────────────────────────────────── */
+
+.editor-canvas > section {
+  margin: 0 auto; /* center narrower sections within the canvas */
+  background: #fff;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.12),
+    0 1px 2px rgba(0, 0, 0, 0.08);
+  outline: 1px solid #d0d0d0;
+  box-sizing: border-box;
+}
+
+/* Sidebar and status-bar styling is handled by Tailwind CSS */
+
+/* ─── Grid Lines (Word-style view option) ───────────────── */
+.editor-canvas.show-grid > section {
+  background-image:
+    repeating-linear-gradient(
+      rgba(100, 149, 237, 0.22) 0px,
+      rgba(100, 149, 237, 0.22) 1px,
+      transparent 1px,
+      transparent 12px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(100, 149, 237, 0.22) 0px,
+      rgba(100, 149, 237, 0.22) 1px,
+      transparent 1px,
+      transparent 12px
+    ),
+    linear-gradient(transparent, transparent); /* dummy: forces border-box clip on background-color */
+  background-origin: content-box, content-box, border-box;
+  background-clip: content-box, content-box, border-box;
+}
+
+/* ─── Paragraph Marks / Pilcrow (Word-style Show/Hide ¶) ── */
+.editor-canvas.show-pilcrow p::after,
+.editor-canvas.show-pilcrow h1::after,
+.editor-canvas.show-pilcrow h2::after,
+.editor-canvas.show-pilcrow h3::after,
+.editor-canvas.show-pilcrow h4::after {
+  content: '\B6';
+  color: #5b87c5;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: none;
+  pointer-events: none;
+  user-select: none;
+  /* Overlay: zero width so the pilcrow never triggers a line-wrap or
+     changes the paragraph's intrinsic height. The character overflows
+     visually to the right without occupying any space in the line box. */
+  display: inline-block;
+  width: 0;
+  overflow: visible;
+  white-space: nowrap;
+  transform: translateX(2px);
+}
+
+/* ─── Break Indicators (visible only in Show/Hide ¶ mode) ─────────────── */
+
+/* Inline page break label (<span data-break-label="page">) */
+[data-break-label="page"] {
+  display: none;
+}
+.editor-canvas.show-pilcrow [data-break-label="page"] {
+  display: inline-block;
+  width: 0;
+  overflow: visible;
+  pointer-events: none;
+  user-select: none;
+}
+.editor-canvas.show-pilcrow [data-break-label="page"]::before {
+  content: '─────────────────────  Page Break  ─────────────────────';
+  display: inline;
+  color: #5b87c5;
+  font-size: 8pt;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: none;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* Page-break-before marker (above the paragraph) */
+.editor-canvas.show-pilcrow [data-page-break-before="true"]::before {
+  content: '─────────────────────  Page Break  ─────────────────────';
+  display: block;
+  color: #5b87c5;
+  font-size: 8pt;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: none;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* Section break — overrides the generic p::after pilcrow; includes ¶ in label */
+[data-section-break] {
+  position: relative;
+  overflow: visible;
+}
+
+.editor-canvas.show-pilcrow [data-section-break]::after {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  display: block;
+  color: #5b87c5;
+  font-size: 8pt;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: none;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  overflow: visible;
+}
+.editor-canvas.show-pilcrow [data-section-break="nextpage"]::after {
+  content: '¶  ─────────  Section Break (Next Page)  ─────────';
+}
+.editor-canvas.show-pilcrow [data-section-break="continuous"]::after {
+  content: '¶  ─────────  Section Break (Continuous)  ─────────';
+}
+.editor-canvas.show-pilcrow [data-section-break="evenpage"]::after {
+  content: '¶  ─────────  Section Break (Even Page)  ─────────';
+}
+.editor-canvas.show-pilcrow [data-section-break="oddpage"]::after {
+  content: '¶  ─────────  Section Break (Odd Page)  ─────────';
+}

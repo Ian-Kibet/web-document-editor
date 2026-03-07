@@ -1,0 +1,7 @@
+src/
+node_modules/
+*.config.ts
+tsconfig*.json
+index.html
+public/
+.changeset/

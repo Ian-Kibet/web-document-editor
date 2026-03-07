@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document Editor Testbed</title>
+  <base href="/" />
+</head>
+<body>
+  <div id="root"></div>
+
+  <script>
+    // Global reference to the .NET JsBridge instance
+    let dotNetRef = null;
+
+    // Called from C# Program.cs to pass the DotNetObjectReference
+    window.setDotNetReference = function (ref) {
+      dotNetRef = ref;
+      window.dispatchEvent(new CustomEvent('engine-ready', { detail: ref }));
+    };
+
+    // Accessor for the TypeScript bridge
+    window.getDotNetReference = function () {
+      return dotNetRef;
+    };
+  </script>
+
+  <!-- Blazor WASM runtime -->
+  <script src="_framework/blazor.webassembly.js" autostart="true"></script>
+
+  <!-- React app -->
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

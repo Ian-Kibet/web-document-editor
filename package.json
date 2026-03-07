@@ -1,0 +1,21 @@
+{
+  "name": "document-editor",
+  "private": true,
+  "workspaces": [
+    "src/packages/*",
+    "examples/*"
+  ],
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "dev": "concurrently --names \"wasm,testbed\" --prefix-colors \"cyan,magenta\" \"dotnet watch run --project src/DocumentEditor.Wasm\" \"yarn workspace document-editor-testbed dev\"",
+    "build": "dotnet publish src/DocumentEditor.Wasm -c Release && yarn workspace document-editor-vanilla build:lib && yarn workspace document-editor-react build",
+    "release": "changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.0",
+    "concurrently": "^9.0.0"
+  },
+  "packageManager": "yarn@4.13.0"
+}

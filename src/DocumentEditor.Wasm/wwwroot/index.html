@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document Editor</title>
+    <base href="/" />
+</head>
+<body>
+    <div id="editor-root"></div>
+
+    <script>
+        // Global reference to the .NET JsBridge instance
+        let dotNetRef = null;
+
+        // Called from C# Program.cs to pass the DotNetObjectReference
+        window.setDotNetReference = function (ref) {
+            dotNetRef = ref;
+            // Dispatch event so the TypeScript app knows the engine is ready
+            window.dispatchEvent(new CustomEvent('engine-ready', { detail: ref }));
+        };
+
+        // Accessor for the TypeScript bridge
+        window.getDotNetReference = function () {
+            return dotNetRef;
+        };
+    </script>
+
+    <!-- Blazor WASM runtime -->
+    <script src="_framework/blazor.webassembly.js" autostart="true"></script>
+
+    <!-- Frontend app (injected by Vite in dev, bundled in prod) -->
+    <script type="module" src="/src/app-entry.ts"></script>
+</body>
+</html>

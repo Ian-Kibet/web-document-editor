@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>DocumentEditor.Wasm</RootNamespace>
+    <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <BlazorEnableHotReload>false</BlazorEnableHotReload>
+    <!-- This project is a Blazor WASM host. Requires wasm-tools workload:
+         sudo dotnet workload install wasm-tools -->
+    <PublishTrimmed>true</PublishTrimmed>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Open XML SDK and Engine use reflection; keep them fully untrimmed -->
+    <TrimmerRootAssembly Include="DocumentFormat.OpenXml" />
+    <TrimmerRootAssembly Include="DocumentFormat.OpenXml.Framework" />
+    <TrimmerRootAssembly Include="DocumentEditor.Engine" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0-*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DocumentEditor.Engine\DocumentEditor.Engine.csproj" />
+  </ItemGroup>
+
+</Project>

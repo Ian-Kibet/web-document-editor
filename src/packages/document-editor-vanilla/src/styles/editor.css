@@ -1,0 +1,187 @@
+/* ─── Reset & Base ──────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  color: #333;
+  background: #f0f0f0;
+}
+
+/* ─── App Layout ────────────────────────────────────────── */
+
+#editor-root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.editor-main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.editor-center {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.editor-scroll-area {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+  background: #e8e8e8;
+}
+
+/* ─── Canvas ────────────────────────────────────────────── */
+
+.editor-canvas {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+  font-family: 'Calibri', 'Carlito', sans-serif;
+  font-size: 11pt;
+  line-height: 1.15;  /* Word visual single-spacing equivalent for Calibri */
+  color: #000;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  caret-color: #000;
+}
+
+.editor-canvas:focus {
+  outline: none;
+}
+
+.editor-canvas p,
+.editor-canvas h1,
+.editor-canvas h2,
+.editor-canvas h3,
+.editor-canvas h4 {
+  margin: 0;
+  padding: 0;
+}
+
+.editor-canvas h1 { font-size: 20pt; font-weight: bold; }
+.editor-canvas h2 { font-size: 16pt; font-weight: bold; }
+.editor-canvas h3 { font-size: 14pt; font-weight: bold; }
+.editor-canvas h4 { font-size: 12pt; font-weight: bold; font-style: italic; }
+
+/* List rendering via data attributes */
+.editor-canvas [data-list-type] {
+  /* margin-left and text-indent come from inline styles (level-based) */
+}
+
+.editor-canvas [data-list-type]::before {
+  display: inline-block;
+  width: var(--list-hanging, 24px); /* matches actual hanging indent from model */
+}
+
+.editor-canvas [data-list-type="bullet"]::before {
+  content: '•';
+}
+
+.editor-canvas [data-list-type="numbered"] {
+  counter-increment: list-counter;
+}
+
+.editor-canvas [data-list-type="numbered"]::before {
+  content: counter(list-counter) '.';
+}
+
+/* Reset counter only when a non-list element (heading or plain paragraph) precedes a numbered item.
+   Bullet items transitioning back to numbered must NOT reset, to preserve list continuation. */
+.editor-canvas :not([data-list-type]) + [data-list-type="numbered"] {
+  counter-reset: list-counter;
+}
+
+/* Tables */
+.editor-canvas table {
+  border-collapse: collapse;
+  margin: 8px 0;
+}
+
+.editor-canvas td {
+  border: 1px solid #bbb;
+  min-width: 40px;
+  vertical-align: top;
+}
+
+/* Hyperlinks */
+.editor-canvas a {
+  color: #0563C1;
+  text-decoration: underline;
+  cursor: text; /* Override pointer — we're in edit mode */
+}
+
+/* Images — base (layout applied per wrap mode via inline style) */
+.editor-canvas [data-type="image"] {
+  user-select: none;
+}
+.editor-canvas [data-type="image"] > img {
+  -webkit-user-drag: none;
+  display: block; /* avoid baseline gap inside absolute container */
+}
+
+/* Clearfix: prevent paragraph collapse when it has floated children.
+   Excluded from paragraphs that anchor a floating image (data-has-float), because
+   clearfix would contain the float inside that paragraph and prevent the text in
+   subsequent paragraphs from wrapping beside the image. */
+.editor-canvas p:not([data-has-float])::after,
+.editor-canvas h1:not([data-has-float])::after,
+.editor-canvas h2:not([data-has-float])::after,
+.editor-canvas h3:not([data-has-float])::after,
+.editor-canvas h4:not([data-has-float])::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+/* Absolute-layer images: suppress native drag/select UI; clicks handled via JS mousedown */
+.editor-canvas img[data-type="image"] {
+  -webkit-user-drag: none;
+  display: block;
+}
+
+/* Tab content */
+.editor-canvas [data-type="tab"] {
+  display: inline-block;
+  min-width: 48px;
+  white-space: pre;
+}
+
+/* Column breaks */
+.editor-canvas [data-break-type="column"] {
+  break-before: column;
+  display: block;
+  height: 0;
+}
+
+/* Page-break gap rows inserted into tables by pagination */
+.editor-canvas tr[data-page-gap-row] > td {
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+/* Loading state */
+.editor-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-size: 16px;
+  color: #666;
+}

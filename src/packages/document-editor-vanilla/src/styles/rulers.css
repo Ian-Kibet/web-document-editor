@@ -1,0 +1,6 @@
+/* Ruler styling is handled by Tailwind CSS in ruler-h.ts and ruler-v.ts */
+
+/* Keep ruler-svg display block for correct SVG rendering */
+.ruler-svg {
+  display: block;
+}

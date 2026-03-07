@@ -1,0 +1,63 @@
+@import "tailwindcss";
+@source ".."; /* scan vanilla/src/** for utility classes (needed when loaded via testbed alias) */
+
+@theme {
+  --color-editor-bg: #f1f3f4;
+  --color-toolbar-bg: #ffffff;
+  --color-toolbar-border: #e5e7eb;
+  --color-active-bg: #dbeafe;
+  --color-active-fg: #1d4ed8;
+}
+
+/* ─── Image selection handles ────────────────────────────────── */
+
+.wave-img-handles {
+  position: absolute;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.wave-img-selected-border {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid #1a73e8;
+  pointer-events: none;
+}
+
+.wave-img-handle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border: 1.5px solid #1a73e8;
+  border-radius: 2px;
+  pointer-events: all;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.wave-img-handle[data-pos="rotate"] {
+  border-radius: 50%;
+  cursor: grab;
+  width: 10px;
+  height: 10px;
+}
+
+.wave-img-handle[data-pos="rotate"]:active {
+  cursor: grabbing;
+}
+
+.wave-img-rotate-line {
+  position: absolute;
+  width: 1px;
+  background: #1a73e8;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.wave-img-move-zone {
+  position: absolute;
+  inset: 0;
+  cursor: move;
+  pointer-events: all;
+}

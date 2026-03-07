@@ -1,0 +1,12 @@
+/Users/ian/development/docugen/poc/ooxml-web-editor/src/DocxEditor.Engine/bin/Release/net10.0/DocxEditor.Engine.deps.json
+/Users/ian/development/docugen/poc/ooxml-web-editor/src/DocxEditor.Engine/bin/Release/net10.0/DocxEditor.Engine.dll
+/Users/ian/development/docugen/poc/ooxml-web-editor/src/DocxEditor.Engine/bin/Release/net10.0/DocxEditor.Engine.pdb
+/Users/ian/development/docugen/poc/ooxml-web-editor/src/DocxEditor.Engine/obj/Release/net10.0/DocxEditor.Engine.csproj.AssemblyReference.cache
+/Users/ian/development/docugen/poc/ooxml-web-editor/src/DocxEditor.Engine/obj/Release/net10.0/DocxEditor.Engine.GeneratedMSBuildEditorConfig.editorconfig
+/Users/ian/development/docugen/poc/ooxml-web-editor/src/DocxEditor.Engine/obj/Release/net10.0/DocxEditor.Engine.AssemblyInfoInputs.cache
+/Users/ian/development/docugen/poc/ooxml-web-editor/src/DocxEditor.Engine/obj/Release/net10.0/DocxEditor.Engine.AssemblyInfo.cs
+/Users/ian/development/docugen/poc/ooxml-web-editor/src/DocxEditor.Engine/obj/Release/net10.0/DocxEditor.Engine.csproj.CoreCompileInputs.cache
+/Users/ian/development/docugen/poc/ooxml-web-editor/src/DocxEditor.Engine/obj/Release/net10.0/DocxEditor.Engine.dll
+/Users/ian/development/docugen/poc/ooxml-web-editor/src/DocxEditor.Engine/obj/Release/net10.0/refint/DocxEditor.Engine.dll
+/Users/ian/development/docugen/poc/ooxml-web-editor/src/DocxEditor.Engine/obj/Release/net10.0/DocxEditor.Engine.pdb
+/Users/ian/development/docugen/poc/ooxml-web-editor/src/DocxEditor.Engine/obj/Release/net10.0/ref/DocxEditor.Engine.dll
