@@ -1,5 +1,14 @@
 # document-editor-vanilla
 
+## 0.1.2
+
+### Patch Changes
+
+- - show grey space below last page and refresh page shadow styles
+  - align horizontal ruler to page element, not scroll position
+  - persist sidebar collapsed state across sessions
+  - retain at least one paragraph when stripping trailing empty paragraphs
+
 ## 0.1.1
 
 ### Patch Changes
