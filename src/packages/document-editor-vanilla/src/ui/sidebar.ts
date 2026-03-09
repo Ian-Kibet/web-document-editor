@@ -51,14 +51,18 @@ export class Sidebar {
   private statsPanel: HTMLElement;
   private xmlPanel: HTMLElement;
   private toggleBtn: HTMLButtonElement;
-  private collapsed = false;
+  private collapsed: boolean;
+  private storageKey: string;
   private tabButtons: Map<TabId, HTMLButtonElement> = new Map();
 
-  constructor(container: HTMLElement) {
+  constructor(container: HTMLElement, storageKey = 'documentEditor.sidebarCollapsed') {
+    this.storageKey = storageKey;
+    this.collapsed = localStorage.getItem(storageKey) === 'true';
+
     this.el = document.createElement('div');
     this.el.className =
       'flex flex-col border-l border-gray-200 bg-white flex-shrink-0 overflow-hidden transition-[width] duration-200';
-    this.el.style.width = '240px';
+    this.el.style.width = this.collapsed ? '40px' : '240px';
 
     // Toggle button row
     const toggleRow = document.createElement('div');
@@ -69,7 +73,10 @@ export class Sidebar {
     this.toggleBtn.title = 'Toggle sidebar';
     this.toggleBtn.className =
       'flex items-center justify-center w-6 h-6 rounded text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors';
-    this.toggleBtn.appendChild(createIconSvg(ChevronRight as [string, Record<string, string>][], 14));
+    const initIcon = this.collapsed
+      ? (ChevronLeft as [string, Record<string, string>][])
+      : (ChevronRight as [string, Record<string, string>][]);
+    this.toggleBtn.appendChild(createIconSvg(initIcon, 14));
     this.toggleBtn.addEventListener('click', () => this.toggle());
     toggleRow.appendChild(this.toggleBtn);
     this.el.appendChild(toggleRow);
@@ -98,6 +105,11 @@ export class Sidebar {
 
     container.appendChild(this.el);
     this.activateTab('outline');
+
+    if (this.collapsed) {
+      this.tabsRow.style.display = 'none';
+      this.panelContainer.style.display = 'none';
+    }
   }
 
   getElement(): HTMLElement {
@@ -106,6 +118,7 @@ export class Sidebar {
 
   toggle(): void {
     this.collapsed = !this.collapsed;
+    localStorage.setItem(this.storageKey, String(this.collapsed));
     this.el.style.width = this.collapsed ? '40px' : '240px';
     this.tabsRow.style.display = this.collapsed ? 'none' : '';
     this.panelContainer.style.display = this.collapsed ? 'none' : '';

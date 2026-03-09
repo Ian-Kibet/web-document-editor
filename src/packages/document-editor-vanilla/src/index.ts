@@ -287,7 +287,7 @@ export async function mountEditor(options: EditorMountOptions): Promise<EditorIn
     // Initialize UI components
     const preset = resolvePreset(toolbarPreset);
     const toolbar = new Toolbar(toolbarContainer, engine, canvas, handleResponse, preset);
-    const sidebar = new Sidebar(sidebarContainer);
+    const sidebar = new Sidebar(sidebarContainer, `${storagePrefix}.sidebarCollapsed`);
     const statusBar = new StatusBar(statusBarContainer);
     const rulerH = new HorizontalRuler(rulerHContainer, engine, canvas, handleResponse);
     const rulerV = new VerticalRuler(rulerVContainer);
