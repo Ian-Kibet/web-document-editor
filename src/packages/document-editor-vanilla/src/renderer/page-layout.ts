@@ -1448,7 +1448,7 @@ export class PageLayout {
    * Use this for sizing the vertical ruler SVG accurately.
    */
   getTotalScrollHeight(): number {
-    return this.canvas.scrollHeight + 40; // 20 top + 20 bottom padding
+    return this.canvas.scrollHeight + 80; // 20 top + 60 bottom padding
   }
 
   /**
