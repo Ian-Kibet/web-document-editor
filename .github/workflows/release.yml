@@ -61,11 +61,53 @@ jobs:
       - name: Build React library
         run: yarn workspace document-editor-react build
 
+      - name: Auto-generate changeset from conventional commits
+        run: |
+          # Skip if manual changeset files already exist
+          PENDING=$(find .changeset -name "*.md" ! -name "README.md" 2>/dev/null | wc -l)
+          if [ "$PENDING" -gt 0 ]; then
+            echo "Manual changeset found — skipping auto-generation"
+            exit 0
+          fi
+
+          # Find last release tag for document-editor-vanilla
+          LAST_TAG=$(git tag --sort=-v:refname | grep "^document-editor-vanilla@" | head -n1)
+          RANGE="${LAST_TAG:+${LAST_TAG}..}HEAD"
+          echo "Scanning: ${RANGE:-all commits}"
+
+          COMMITS=$(git log --format="%s" ${RANGE})
+
+          # Infer bump type from conventional commit prefixes
+          BUMP="patch"
+          if echo "$COMMITS" | grep -qiE "^(feat|fix|perf)(\(.+\))?!:|^BREAKING CHANGE"; then
+            BUMP="major"
+          elif echo "$COMMITS" | grep -qiE "^feat(\(.+\))?:"; then
+            BUMP="minor"
+          fi
+
+          # Extract descriptions from releasable commit types only
+          DESCRIPTIONS=$(echo "$COMMITS" | \
+            grep -E "^(fix|feat|perf)(\(.+\))?:" | \
+            sed -E 's/^[a-z]+(\([^)]+\))?!?: /- /')
+
+          if [ -z "$DESCRIPTIONS" ]; then
+            echo "No releasable commits (fix/feat/perf) found — skipping"
+            exit 0
+          fi
+
+          CHANGESET_ID="auto-$(echo $GITHUB_SHA | cut -c1-7)"
+          printf -- '---\n"document-editor-vanilla": %s\n---\n\n%s\n' \
+            "$BUMP" "$DESCRIPTIONS" > ".changeset/${CHANGESET_ID}.md"
+
+          echo "Generated .changeset/${CHANGESET_ID}.md ($BUMP)"
+          cat ".changeset/${CHANGESET_ID}.md"
+
       - name: Create Release PR or Publish
         uses: changesets/action@v1
         with:
           publish: yarn release
           title: 'chore: release packages'
           commit: 'chore: release packages'
+          createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

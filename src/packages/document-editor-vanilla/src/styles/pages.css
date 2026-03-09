@@ -4,8 +4,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  align-self: flex-start;
   gap: 20px;
   padding: 20px;
+  padding-bottom: 60px;
+  min-width: 100%;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .page-frame {
@@ -29,31 +34,36 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible;
   background: transparent;
 }
 
 .page-break-margin-bottom {
   background: #fff;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
   flex-shrink: 0;
   overflow: hidden;
+  box-shadow:
+    0 1px 3px rgba(60, 64, 67, 0.3),
+    0 4px 8px 3px rgba(60, 64, 67, 0.15);
+  clip-path: inset(0 0 -50px 0);
 }
 
 .page-break-gap {
-  background: #e8e8e8;
-  box-shadow:
-    inset 0 2px 3px rgba(0, 0, 0, 0.1),
-    inset 0 -2px 3px rgba(0, 0, 0, 0.1);
   flex-shrink: 0;
   position: relative;
+  background: #e8eaed;
+  box-shadow: 0 0 0 9999px #e8eaed;
+  clip-path: inset(0 -9999px);
 }
 
 .page-break-margin-top {
   background: #fff;
-  box-shadow: 0 -2px 3px rgba(0, 0, 0, 0.15);
   flex-shrink: 0;
   overflow: hidden;
+  box-shadow:
+    0 -1px 3px rgba(60, 64, 67, 0.3),
+    0 -4px 8px 3px rgba(60, 64, 67, 0.15);
+  clip-path: inset(-50px 0 0 0);
 }
 
 /* ─── Header/Footer Content in Margin Zones ─────────────── */
@@ -98,9 +108,9 @@
   margin: 0 auto; /* center narrower sections within the canvas */
   background: #fff;
   box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.12),
-    0 1px 2px rgba(0, 0, 0, 0.08);
-  outline: 1px solid #d0d0d0;
+    0 1px 3px rgba(60, 64, 67, 0.3),
+    0 4px 8px 3px rgba(60, 64, 67, 0.15);
+  /* outline removed — shadow defines the page boundary */
   box-sizing: border-box;
 }
 

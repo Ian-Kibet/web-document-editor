@@ -1410,6 +1410,7 @@ export class PageLayout {
     pageWidth: number; pageHeight: number;
     marginLeft: number; marginRight: number;
     marginTop: number; marginBottom: number;
+    sectionIndex: number;
   } | null {
     if (this.sectionConfigs.length === 0) return null;
     const idx = this.pageSectionMap[page - 1] ?? 0;
@@ -1419,6 +1420,7 @@ export class PageLayout {
       pageWidth: sc.pageWidth, pageHeight: sc.pageHeight,
       marginLeft: sc.marginLeft, marginRight: sc.marginRight,
       marginTop: sc.marginTop, marginBottom: sc.marginBottom,
+      sectionIndex: idx,
     };
   }
 
@@ -1446,7 +1448,7 @@ export class PageLayout {
    * Use this for sizing the vertical ruler SVG accurately.
    */
   getTotalScrollHeight(): number {
-    return this.canvas.scrollHeight + 40; // 20 top + 20 bottom padding
+    return this.canvas.scrollHeight + 80; // 20 top + 60 bottom padding
   }
 
   /**
