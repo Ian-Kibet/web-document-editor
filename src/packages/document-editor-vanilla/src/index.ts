@@ -204,7 +204,7 @@ export async function mountEditor(options: EditorMountOptions): Promise<EditorIn
 
     // Scroll area
     const scrollArea = document.createElement('div');
-    scrollArea.className = 'flex flex-1 overflow-auto bg-[#e8eaed] justify-center';
+    scrollArea.className = 'flex flex-1 overflow-auto bg-[#e8eaed]';
     editorRow.appendChild(scrollArea);
 
     // Sidebar
@@ -244,7 +244,7 @@ export async function mountEditor(options: EditorMountOptions): Promise<EditorIn
       const dims = pageLayout.getPageRulerDimensions(page);
       if (!dims) return;
       const pageTopScrollY = pageLayout.getPageTopScrollY(page);
-      rulerH.updateDimensions(dims.pageWidth, dims.marginLeft, dims.marginRight);
+      rulerH.updateDimensions(dims.pageWidth, dims.marginLeft, dims.marginRight, dims.sectionIndex);
       rulerV.updateDimensions(dims.pageHeight, dims.marginTop, dims.marginBottom, page, pageTopScrollY);
     };
 
@@ -320,7 +320,7 @@ export async function mountEditor(options: EditorMountOptions): Promise<EditorIn
     // Sync vertical ruler scroll + update current page/ruler on scroll
     scrollArea.addEventListener('scroll', () => {
       rulerV.syncScroll(scrollArea.scrollTop);
-      rulerH.syncScrollLeft(scrollArea.scrollLeft);
+      rulerH.syncScrollLeft(scrollArea.scrollLeft, scrollArea.clientWidth);
       const page = pageLayout.getCurrentPage(scrollArea);
       statusBar.updatePageInfo(page, pageLayout.pageCount);
     });

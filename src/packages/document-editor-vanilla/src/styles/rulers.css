@@ -3,4 +3,5 @@
 /* Keep ruler-svg display block for correct SVG rendering */
 .ruler-svg {
   display: block;
+  flex-shrink: 0;
 }

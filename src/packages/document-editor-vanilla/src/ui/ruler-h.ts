@@ -24,6 +24,9 @@ export class HorizontalRuler {
   // Current indent values in twips
   private indentLeft = 0;
   private indentFirstLine = 0;
+  private scrollLeft = 0;
+  private scrollAreaClientWidth = 0;
+  private activeSectionIndex = 0;
 
   constructor(
     container: HTMLElement,
@@ -36,7 +39,7 @@ export class HorizontalRuler {
     this.onResponse = onResponse;
 
     this.el = document.createElement('div');
-    this.el.className = 'ruler-h flex justify-center border-b border-gray-200 bg-gray-50 overflow-hidden flex-shrink-0 select-none';
+    this.el.className = 'ruler-h flex border-b border-gray-200 bg-[#e0e0e0] overflow-hidden flex-shrink-0 select-none';
 
     const ns = 'http://www.w3.org/2000/svg';
     this.svg = document.createElementNS(ns, 'svg');
@@ -48,6 +51,7 @@ export class HorizontalRuler {
     container.appendChild(this.el);
 
     this.render();
+    this.applyTransform();
   }
 
   getElement(): HTMLElement {
@@ -59,18 +63,39 @@ export class HorizontalRuler {
     this.zoom = zoom;
     this.svg.setAttribute('width', String(this.pageWidth * zoom));
     this.render();
+    this.applyTransform();
   }
 
-  syncScrollLeft(scrollLeft: number): void {
-    this.svg.style.transform = `translateX(-${scrollLeft}px)`;
+  syncScrollLeft(scrollLeft: number, clientWidth: number): void {
+    this.scrollLeft = scrollLeft;
+    this.scrollAreaClientWidth = clientWidth;
+    this.applyTransform();
   }
 
-  updateDimensions(pageWidth: number, marginLeft: number, marginRight: number): void {
+  updateDimensions(pageWidth: number, marginLeft: number, marginRight: number, sectionIndex = 0): void {
     this.pageWidth = pageWidth;
     this.marginLeft = marginLeft;
     this.marginRight = marginRight;
+    this.activeSectionIndex = sectionIndex;
     this.svg.setAttribute('width', String(pageWidth * this.zoom));
     this.render();
+    this.applyTransform();
+  }
+
+  private applyTransform(): void {
+    const sections = this.canvas.querySelectorAll('section');
+    const sectionEl = sections[this.activeSectionIndex] ?? sections[0];
+    if (sectionEl) {
+      const pageLeft = (sectionEl as HTMLElement).getBoundingClientRect().left;
+      const rulerLeft = this.el.getBoundingClientRect().left;
+      this.svg.style.transform = `translateX(${pageLeft - rulerLeft}px)`;
+      return;
+    }
+    // Fallback before document loads (no section in canvas yet)
+    const containerWidth = this.scrollAreaClientWidth || this.el.offsetWidth;
+    const svgWidth = this.pageWidth * this.zoom;
+    const pageOffset = Math.max((containerWidth - svgWidth) / 2, 20);
+    this.svg.style.transform = `translateX(${pageOffset - this.scrollLeft}px)`;
   }
 
   updateIndents(indentLeft: number, indentFirstLine: number): void {
